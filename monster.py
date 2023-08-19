@@ -11,7 +11,6 @@ class Monster:
     def locate_monster(self):
         w_i = random.choice([i for i in range(1,self.grid_length-1)])
         h_i = random.choice([i for i in range(1,self.grid_length-1)])
-
         return [w_i, h_i]
 
     def reset_location(self):

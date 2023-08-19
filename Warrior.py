@@ -34,7 +34,6 @@ class Warrior:
         elif self.command == 'LEFT':
             if self.current_location[0] != 0:
                 self.current_location[0] = self.current_location[0] - 1
-
         return self.current_location
 
 # warr = Warrior()
