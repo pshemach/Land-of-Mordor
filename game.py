@@ -1,6 +1,6 @@
-from warrior import Warrior
-from monster import Monster
-from tree import Tree
+from Warrior import Warrior
+from Monster import Monster
+from Tree import Tree
 
 
 class Game:
