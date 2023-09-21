@@ -1,6 +1,7 @@
 from Warrior import Warrior
 from Monster import Monster
 from Tree import Tree
+import random
 
 
 class Game:
@@ -11,23 +12,28 @@ class Game:
         self.warrior_lis = self.initiate_warrior()
         self.monster_lis = self.initiate_monster()
         self.tree_lis = self.initiate_tree()
+        print(f'Worriers Locations: {[self.warrior_lis[i].current_location for i in range(4)]}')
+        print(f'Monsters Locations: {[self.monster_lis[i].monster_location for i in range(5)]}')
+        print(f'Trees Locations: {[self.tree_lis[i].tree_location for i in range(5)]}')
+        for worrier in self.warrior_lis:
+            self.play_game(worrier)
 
     def initiate_warrior(self):
-        n_warr_lis = []
+        n_war_lis = []
         for i in range(self.n_warrior):
-            n_warr_lis.append(Warrior())
+            n_war_lis.append(Warrior())
 
         while True:
             count = 0
             for i in range(self.n_warrior):
                 for j in range(self.n_warrior):
                     if i != j:
-                        if n_warr_lis[i].current_location == n_warr_lis[j].current_location:
-                            n_warr_lis[i].reset_location()
+                        if n_war_lis[i].current_location == n_war_lis[j].current_location:
+                            n_war_lis[i].reset_location()
                             count = count + 1
             if count == 0:
                 break
-        return n_warr_lis
+        return n_war_lis
 
     def initiate_monster(self):
         n_mons_lis = []
@@ -68,8 +74,18 @@ class Game:
                 break
         return n_tree_lis
 
+    def play_game(self, worrier):
+        while True:
+            choice = random.choice(['UP', 'DOWN', 'LEFT', 'RIGHT'])
+            worrier.walk_to_mount_doom(choice)
+            for mons in self.monster_lis:
+                if mons.monster_location == worrier.current_location:
+                    print(f'Worrier {self.warrior_lis.index(worrier)} Out AT Monster Location: {mons.monster_location}')
+                    return False
+                elif worrier.current_location == [4,4]:
+                    print(f'Worrier {self.warrior_lis.index(worrier)} WIN!!!')
+                    return False
+
 
 game = Game()
-print([game.warrior_lis[i].current_location for i in range(4)])
-print([game.monster_lis[i].monster_location for i in range(5)])
-print([game.tree_lis[i].tree_location for i in range(5)])
+

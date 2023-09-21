@@ -2,7 +2,7 @@ import random
 
 
 class Warrior:
-    def __init__(self, grid_length = 10):
+    def __init__(self, grid_length=10):
         self.grid_length = grid_length
         self.command = None
         self.current_location = self.initiate_location()
@@ -36,10 +36,3 @@ class Warrior:
                 self.current_location[0] = self.current_location[0] - 1
         return self.current_location
 
-# warr = Warrior()
-# while True:
-#     command = random.choice(['UP', 'DOWN', 'LEFT', "RIGHT"])
-#     current_location = warr.walk_to_mount_doom(command)
-#     if current_location == [4, 4]:
-#         print("WIN!!!")
-#         break
