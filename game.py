@@ -1,4 +1,4 @@
-from Warrior import Warrior
+from warrior import Warrior
 from Monster import Monster
 from Tree import Tree
 import random
