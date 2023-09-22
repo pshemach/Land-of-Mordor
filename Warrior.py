@@ -9,10 +9,10 @@ class Warrior:
 
     def initiate_location(self):
         i_w = random.choice([i for i in range(self.grid_length)])
-        if i_w != 0 or (self.grid_length - 1):
+        if i_w != 0 or i_w != (self.grid_length - 1):
             i_h = random.choice([0, (self.grid_length - 1)])
         else:
-            i_h = random.choice([i for i in range(self.grid_length)])
+            i_h = random.randint(0,self.grid_length-1)
         return [i_w, i_h]
 
     def reset_location(self):

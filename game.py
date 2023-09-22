@@ -5,16 +5,17 @@ import random
 
 
 class Game:
-    def __init__(self, n_warrior=4, n_monster=5, n_tree=5):
+    def __init__(self, n_warrior=4, n_monster=5, n_tree=5, grid_length=10):
+        self.grid_length = grid_length
         self.n_warrior = n_warrior
         self.n_monster = n_monster
         self.n_tree = n_tree
         self.warrior_lis = self.initiate_warrior()
         self.monster_lis = self.initiate_monster()
         self.tree_lis = self.initiate_tree()
-        print(f'Worriers Locations: {[self.warrior_lis[i].current_location for i in range(4)]}')
-        print(f'Monsters Locations: {[self.monster_lis[i].monster_location for i in range(5)]}')
-        print(f'Trees Locations: {[self.tree_lis[i].tree_location for i in range(5)]}')
+        print(f'Worriers Locations: {[self.warrior_lis[i].current_location for i in range(self.n_warrior)]}')
+        print(f'Monsters Locations: {[self.monster_lis[i].monster_location for i in range(self.n_monster)]}')
+        print(f'Trees Locations: {[self.tree_lis[i].tree_location for i in range(self.n_tree)]}')
         for worrier in self.warrior_lis:
             self.play_game(worrier)
 
@@ -74,18 +75,27 @@ class Game:
                 break
         return n_tree_lis
 
-    def play_game(self, worrier):
+    def move_choice(self, warrior):
+        move_dic = {'UP': [0, 1], 'DOWN': [0, -1], 'RIGHT': [1, 0], 'LEFT': [-1, 0]}
+        choice_lis = ['UP', 'DOWN', 'LEFT', 'RIGHT']
+        choice = random.choice(choice_lis)
+        for wor in self.warrior_lis:
+            if wor != warrior and wor.current_location == warrior.current_location + move_dic[choice]:
+                choice_lis.remove(choice)
+                choice = random.choice(choice_lis)
+        return choice
+
+    def play_game(self, warrior):
         while True:
-            choice = random.choice(['UP', 'DOWN', 'LEFT', 'RIGHT'])
-            worrier.walk_to_mount_doom(choice)
+            choice = self.move_choice(warrior)
+            warrior.walk_to_mount_doom(choice)
             for mons in self.monster_lis:
-                if mons.monster_location == worrier.current_location:
-                    print(f'Worrier {self.warrior_lis.index(worrier)} Out AT Monster Location: {mons.monster_location}')
+                if mons.monster_location == warrior.current_location:
+                    print(f'Worrier {self.warrior_lis.index(warrior)} Out AT Monster Location: {mons.monster_location}')
                     return False
-                elif worrier.current_location == [4,4]:
-                    print(f'Worrier {self.warrior_lis.index(worrier)} WIN!!!')
+                elif warrior.current_location == [(self.grid_length / 2) - 1, (self.grid_length / 2) - 1]:
+                    print(f'Worrier {self.warrior_lis.index(warrior)} WIN!!!')
                     return False
 
 
 game = Game()
-
