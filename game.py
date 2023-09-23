@@ -10,6 +10,7 @@ class Game:
         self.n_warrior = n_warrior
         self.n_monster = n_monster
         self.n_tree = n_tree
+        self.grid = [[0 for _ in range(self.grid_length)] for _ in range(self.grid_length)]
         self.warrior_lis = self.initiate_warrior()
         self.monster_lis = self.initiate_monster()
         self.tree_lis = self.initiate_tree()
@@ -22,7 +23,7 @@ class Game:
     def initiate_warrior(self):
         n_war_lis = []
         for i in range(self.n_warrior):
-            n_war_lis.append(Warrior())
+            n_war_lis.append(Warrior(grid_length=self.grid_length, grid=self.grid))
 
         while True:
             count = 0
@@ -30,10 +31,11 @@ class Game:
                 for j in range(self.n_warrior):
                     if i != j:
                         if n_war_lis[i].current_location == n_war_lis[j].current_location:
-                            n_war_lis[i].reset_location()
+                            n_war_lis[i].reset_initial_location()
                             count = count + 1
-            if count == 0:
-                break
+            # if count == 0:
+            #     break
+            break
         return n_war_lis
 
     def initiate_monster(self):
