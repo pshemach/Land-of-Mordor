@@ -36,23 +36,15 @@ class Warrior:
 
     def take_step(self, command=None):
         self.command = command
-        # if self.command == 'UP':
-        #     if self.current_location[1] != (self.grid_length - 1):
-        #         self.current_location = self.current_location + self.move_dic[command]
-        # elif self.command == 'DOWN':
-        #     if self.current_location[1] != 0:
-        #         self.current_location = self.current_location + self.move_dic[command]
-        # elif self.command == 'RIGHT':
-        #     if self.current_location[0] != (self.grid_length - 1):
-        #         self.current_location = self.current_location + self.move_dic[command]
-        # elif self.command == 'LEFT':
-        #     if self.current_location[0] != 0:
-        #         self.current_location = self.current_location + self.move_dic[command]
-        # return self.current_location
-        a, b = self.current_location + self.move_dic[self.command]
-        if 0 <= a and b <= 9:
+        a, b = self.current_location
+        if 0 <= a and b <= self.grid_length - 1:
             self.current_location = self.current_location + self.move_dic[self.command]
         return self.current_location
 
     def move_to_mount_doom(self):
-        pass
+        while True:
+            command = self.get_direction()
+            a, b = self.take_step(command=command)
+            if (a,b) == (4,4):
+                print('WIN...')
+                break
