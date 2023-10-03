@@ -46,7 +46,8 @@ class Game:
         return n_tree_lis
 
     def play_game(self):
-        pass
+        for war in self.warrior_lis:
+            war.move_to_mount_doom()
 
 
 game = Game()

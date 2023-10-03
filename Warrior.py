@@ -6,6 +6,7 @@ class Warrior:
         self.grid_length = grid_length
         self.grid = grid
         self.move_dic = {'UP': [0, 1], 'DOWN': [0, -1], 'RIGHT': [1, 0], 'LEFT': [-1, 0]}
+        self.move = None
         self.command = None
         self.warrior_location = self.initiate_location()
 
@@ -43,14 +44,13 @@ class Warrior:
         if 0 <= a and b <= self.grid_length - 1:
             self.warrior_location = self.warrior_location + self.move_dic[self.command]
             a, b = self.warrior_location
-            self.grid[a][b] = self
         return self.warrior_location
 
-    def move_to_mount_doom(self):
-        while True:
+    def move_to_mount_doom(self, move=True):
+        self.move = move
+        while self.move:
             command = self.get_direction()
             a, b = self.take_step(command=command)
-            print(self.grid)
-            if (a, b) == (4, 4):
-                print('WIN...')
-                break
+            return [a, b], command
+
+
