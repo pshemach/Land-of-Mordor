@@ -1,7 +1,6 @@
 from Warrior import Warrior
 from Monster import Monster
 from Tree import Tree
-import random
 import threading
 
 class Game:
@@ -17,6 +16,7 @@ class Game:
         print(f'Worriers Locations: {[self.warrior_lis[i].warrior_location for i in range(self.n_warrior)]}')
         print(f'Monsters Locations: {[self.monster_lis[i].monster_location for i in range(self.n_monster)]}')
         print(f'Trees Locations: {[self.tree_lis[i].tree_location for i in range(self.n_tree)]}')
+        self.play_game()
 
     def initiate_warrior(self):
         n_war_lis = []

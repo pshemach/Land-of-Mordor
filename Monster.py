@@ -18,4 +18,3 @@ class Monster:
     def reset_location(self):
         self.monster_location = self.locate_monster()
         return self.monster_location
-
