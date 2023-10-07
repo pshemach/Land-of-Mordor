@@ -64,9 +64,4 @@ class Warrior:
                 self.warrior_location[0] = self.warrior_location[0] - self.move_dic[self.command][0]
                 self.warrior_location[1] = self.warrior_location[1] - self.move_dic[self.command][1]
             else:
-                self.grid[a][b] = self
-
-
-
-
-
+                self.grid[a][b] = self 
