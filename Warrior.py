@@ -59,11 +59,13 @@ class Warrior:
                 print('WIN', self)
                 break
             elif isinstance(self.grid[a][b],Monster):
-                print('Monster',self)
+                print('Meet Monster',self)
                 break
             elif isinstance(self.grid[a][b],Tree):
                 self.warrior_location[0] = self.warrior_location[0] - self.move_dic[self.command][0]
                 self.warrior_location[1] = self.warrior_location[1] - self.move_dic[self.command][1]
+                a, b = self.warrior_location
+                self.grid[a][b] = self
             else:
                 self.grid[a][b] = self
 
