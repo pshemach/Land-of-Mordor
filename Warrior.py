@@ -45,6 +45,7 @@ class Warrior:
         self.command = command
         a, b = self.warrior_location
         if 0 <= a and b <= self.grid_length - 1:
+            self.grid[a][b] = 0
             self.warrior_location[0] = self.warrior_location[0] + self.move_dic[self.command][0]
             self.warrior_location[1] = self.warrior_location[1] + self.move_dic[self.command][1]
         return self.warrior_location
@@ -64,4 +65,9 @@ class Warrior:
                 self.warrior_location[0] = self.warrior_location[0] - self.move_dic[self.command][0]
                 self.warrior_location[1] = self.warrior_location[1] - self.move_dic[self.command][1]
             else:
-                self.grid[a][b] = self 
+                self.grid[a][b] = self
+
+
+
+
+
