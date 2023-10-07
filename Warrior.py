@@ -33,43 +33,53 @@ class Warrior:
         for i in range(4):
             a = self.warrior_location[0] + self.move_dic[choice][0]
             b = self.warrior_location[1] + self.move_dic[choice][1]
-            if isinstance(self.grid[a][b], Warrior):
-                direction_lis.remove(choice)
-                choice = random.choice(direction_lis)
+            try:
+                if isinstance(self.grid[a][b], Warrior):
+                    direction_lis.remove(choice)
+                    choice = random.choice(direction_lis)
+                    continue
+                else:
+                    break
+            except:
                 continue
-            else:
-                break
         return choice
 
     def take_step(self, command=None):
         self.command = command
         a, b = self.warrior_location
-        if 0 <= a and b <= self.grid_length - 1:
-            self.grid[a][b] = 0
-            self.warrior_location[0] = self.warrior_location[0] + self.move_dic[self.command][0]
-            self.warrior_location[1] = self.warrior_location[1] + self.move_dic[self.command][1]
+        if self.command == 'UP':
+            if self.warrior_location[1] != (self.grid_length - 1):
+                self.grid[a][b] = 0
+                self.warrior_location[1] = self.warrior_location[1] + 1
+        elif self.command == 'DOWN':
+            if self.warrior_location[1] != 0:
+                self.grid[a][b] = 0
+                self.warrior_location[1] = self.warrior_location[1] - 1
+        elif self.command == 'RIGHT':
+            if self.warrior_location[0] != (self.grid_length - 1):
+                self.grid[a][b] = 0
+                self.warrior_location[0] = self.warrior_location[0] + 1
+        elif self.command == 'LEFT':
+            if self.warrior_location[0] != 0:
+                self.grid[a][b] = 0
+                self.warrior_location[0] = self.warrior_location[0] - 1
         return self.warrior_location
 
     def move_to_mount_doom(self):
         while True:
             self.command = self.get_direction()
             a, b = self.take_step(command=self.command)
-            print(a,b)
+            print(a, b)
             if [a, b] == [(self.grid_length / 2) - 1, (self.grid_length / 2) - 1]:
                 print('WIN', self)
                 break
-            elif isinstance(self.grid[a][b],Monster):
-                print('Meet Monster',self)
+            elif isinstance(self.grid[a][b], Monster):
+                print('Meet Monster', self)
                 break
-            elif isinstance(self.grid[a][b],Tree):
+            elif isinstance(self.grid[a][b], Tree):
                 self.warrior_location[0] = self.warrior_location[0] - self.move_dic[self.command][0]
                 self.warrior_location[1] = self.warrior_location[1] - self.move_dic[self.command][1]
                 a, b = self.warrior_location
                 self.grid[a][b] = self
             else:
                 self.grid[a][b] = self
-
-
-
-
-

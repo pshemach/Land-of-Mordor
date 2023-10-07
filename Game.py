@@ -3,6 +3,7 @@ from Monster import Monster
 from Tree import Tree
 import threading
 
+
 class Game:
     def __init__(self, n_warrior=4, n_monster=5, n_tree=5, grid_length=10):
         self.grid_length = grid_length
