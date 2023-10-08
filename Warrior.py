@@ -2,17 +2,18 @@ import random
 
 from Monster import Monster
 from Tree import Tree
+from MountDoom import MountDoom
+from GameObjects import GameObject
 
 
-class Warrior:
+class Warrior(GameObject):
     def __init__(self, grid_length, grid):
-        self.grid_length = grid_length
-        self.grid = grid
+        super().__init__(grid_length, grid)
         self.move_dic = {'UP': [0, 1], 'DOWN': [0, -1], 'RIGHT': [1, 0], 'LEFT': [-1, 0]}
         self.command = None
-        self.warrior_location = self.initiate_location()
+        self.warrior_location = self.object_location()
 
-    def initiate_location(self):
+    def object_location(self):
         while True:
             i_w = random.randint(0, self.grid_length - 1)
             if i_w != 0 or i_w != (self.grid_length - 1):
@@ -22,10 +23,6 @@ class Warrior:
             if self.grid[i_w][i_h] == 0:
                 break
         return [i_w, i_h]
-
-    def reset_initial_location(self):
-        self.warrior_location = self.initiate_location()
-        return self.warrior_location
 
     def get_direction(self):
         direction_lis = ['UP', 'DOWN', 'LEFT', 'RIGHT']
@@ -69,8 +66,7 @@ class Warrior:
         while True:
             self.command = self.get_direction()
             a, b = self.take_step(command=self.command)
-            print(a, b)
-            if [a, b] == [(self.grid_length / 2) - 1, (self.grid_length / 2) - 1]:
+            if isinstance(self.grid[a][b], MountDoom):
                 print('WIN', self)
                 break
             elif isinstance(self.grid[a][b], Monster):

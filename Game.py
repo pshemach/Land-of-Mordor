@@ -1,6 +1,7 @@
 from Warrior import Warrior
 from Monster import Monster
 from Tree import Tree
+from MountDoom import MountDoom
 import threading
 
 
@@ -11,6 +12,7 @@ class Game:
         self.n_monster = n_monster
         self.n_tree = n_tree
         self.grid = [[0 for _ in range(self.grid_length)] for _ in range(self.grid_length)]
+        MountDoom(grid_length=self.grid_length, grid=self.grid)
         self.warrior_lis = self.initiate_warrior()
         self.monster_lis = self.initiate_monster()
         self.tree_lis = self.initiate_tree()
@@ -47,8 +49,14 @@ class Game:
         return n_tree_lis
 
     def play_game(self):
+        threads = []
         for war in self.warrior_lis:
-            war.move_to_mount_doom()
+            t = threading.Thread(target=war.move_to_mount_doom)
+            t.start()
+            threads.append(t)
+
+        for thread in threads:
+            thread.join()
 
 
 game = Game()
