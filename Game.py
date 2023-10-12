@@ -5,8 +5,25 @@ from MountDoom import MountDoom
 import threading
 
 
+# class GridKeeper:
+#     def __init__(self, grid_length):
+#         self.grid_length = grid_length
+#         self.grid = [[0 for _ in range(self.grid_length)] for _ in range(self.grid_length)]
+#         self.lock = threading.Lock()
+#
+#     def acquire_lock(self):
+#         self.lock.acquire()
+#
+#     def release_lock(self):
+#         self.lock.release()
+#
+#     def place_in_grid(self, a, b, object):
+#         self.grid[a][b] = object
+
+
 class Game:
     def __init__(self, n_warrior=4, n_monster=5, n_tree=5, grid_length=10):
+        self.lock = None
         self.grid_length = grid_length
         self.n_warrior = n_warrior
         self.n_monster = n_monster
@@ -50,8 +67,9 @@ class Game:
 
     def play_game(self):
         threads = []
+        self.lock = threading.Lock()
         for war in self.warrior_lis:
-            t = threading.Thread(target=war.move_to_mount_doom)
+            t = threading.Thread(target=war.move_to_mount_doom, args=(self.lock,))
             t.start()
             threads.append(t)
 
@@ -60,4 +78,3 @@ class Game:
 
 
 game = Game()
-print(game.grid)

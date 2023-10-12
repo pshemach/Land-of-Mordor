@@ -1,5 +1,4 @@
 import random
-
 from Monster import Monster
 from Tree import Tree
 from MountDoom import MountDoom
@@ -62,20 +61,27 @@ class Warrior(GameObject):
                 self.warrior_location[0] = self.warrior_location[0] - 1
         return self.warrior_location
 
-    def move_to_mount_doom(self):
+    def move_to_mount_doom(self, lock):
+        lock = lock
         while True:
+            lock.acquire()
             self.command = self.get_direction()
             a, b = self.take_step(command=self.command)
             if isinstance(self.grid[a][b], MountDoom):
                 print('WIN', self)
+                lock.release()
                 break
             elif isinstance(self.grid[a][b], Monster):
                 print('Meet Monster', self)
+                lock.release()
                 break
             elif isinstance(self.grid[a][b], Tree):
                 self.warrior_location[0] = self.warrior_location[0] - self.move_dic[self.command][0]
                 self.warrior_location[1] = self.warrior_location[1] - self.move_dic[self.command][1]
                 a, b = self.warrior_location
                 self.grid[a][b] = self
+                lock.release()
             else:
                 self.grid[a][b] = self
+                lock.release()
+

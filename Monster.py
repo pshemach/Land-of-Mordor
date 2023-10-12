@@ -1,5 +1,4 @@
 from GameObjects import GameObject
-from GameObjects import GameObject
 
 
 class Monster(GameObject):
