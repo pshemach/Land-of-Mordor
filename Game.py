@@ -5,20 +5,20 @@ from MountDoom import MountDoom
 import threading
 
 
-# class GridKeeper:
-#     def __init__(self, grid_length):
-#         self.grid_length = grid_length
-#         self.grid = [[0 for _ in range(self.grid_length)] for _ in range(self.grid_length)]
-#         self.lock = threading.Lock()
-#
-#     def acquire_lock(self):
-#         self.lock.acquire()
-#
-#     def release_lock(self):
-#         self.lock.release()
-#
-#     def place_in_grid(self, a, b, object):
-#         self.grid[a][b] = object
+class GridKeeper:
+    def __init__(self, grid_length):
+        self.grid_length = grid_length
+        self.grid = [[0 for _ in range(self.grid_length)] for _ in range(self.grid_length)]
+        self.lock = threading.Lock()
+
+    def acquire_lock(self):
+        self.lock.acquire()
+
+    def release_lock(self):
+        self.lock.release()
+
+    def place_in_grid(self, a, b, warrior):
+        self.grid[a][b] = warrior
 
 
 class Game:
@@ -28,7 +28,8 @@ class Game:
         self.n_warrior = n_warrior
         self.n_monster = n_monster
         self.n_tree = n_tree
-        self.grid = [[0 for _ in range(self.grid_length)] for _ in range(self.grid_length)]
+        self.grid_keeper = GridKeeper(self.grid_length)
+        self.grid = self.grid_keeper.grid
         MountDoom(grid_length=self.grid_length, grid=self.grid)
         self.warrior_lis = self.initiate_warrior()
         self.monster_lis = self.initiate_monster()
@@ -41,7 +42,7 @@ class Game:
     def initiate_warrior(self):
         n_war_lis = []
         for _ in range(self.n_warrior):
-            war = Warrior(grid_length=self.grid_length, grid=self.grid)
+            war = Warrior(grid_length=self.grid_length, grid_keeper=self.grid_keeper)
             n_war_lis.append(war)
             a, b = war.warrior_location
             self.grid[a][b] = war
@@ -50,7 +51,7 @@ class Game:
     def initiate_monster(self):
         n_mons_lis = []
         for _ in range(self.n_monster):
-            mons = Monster(grid_length=self.grid_length, grid=self.grid)
+            mons = Monster(grid_length=self.grid_length, grid_keeper=self.grid_keeper)
             n_mons_lis.append(mons)
             a, b = mons.monster_location
             self.grid[a][b] = mons
@@ -59,7 +60,7 @@ class Game:
     def initiate_tree(self):
         n_tree_lis = []
         for _ in range(self.n_tree):
-            tree = Tree(grid_length=self.grid_length, grid=self.grid)
+            tree = Tree(grid_length=self.grid_length, grid_keeper=self.grid_keeper)
             n_tree_lis.append(tree)
             a, b = tree.tree_location
             self.grid[a][b] = tree
@@ -67,9 +68,8 @@ class Game:
 
     def play_game(self):
         threads = []
-        self.lock = threading.Lock()
         for war in self.warrior_lis:
-            t = threading.Thread(target=war.move_to_mount_doom, args=(self.lock,))
+            t = threading.Thread(target=war.move_to_mount_doom)
             t.start()
             threads.append(t)
 

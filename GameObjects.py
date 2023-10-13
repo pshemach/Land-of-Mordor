@@ -2,9 +2,9 @@ import random
 
 
 class GameObject:
-    def __init__(self, grid_length, grid):
+    def __init__(self, grid_length, grid_keeper):
         self.grid_length = grid_length
-        self.grid = grid
+        self.grid = grid_keeper.grid
 
     def object_location(self):
         while True:

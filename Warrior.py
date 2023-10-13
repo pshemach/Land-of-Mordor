@@ -6,8 +6,9 @@ from GameObjects import GameObject
 
 
 class Warrior(GameObject):
-    def __init__(self, grid_length, grid):
-        super().__init__(grid_length, grid)
+    def __init__(self, grid_length, grid_keeper):
+        super().__init__(grid_length, grid_keeper)
+        self.grid_keeper = grid_keeper
         self.move_dic = {'UP': [0, 1], 'DOWN': [0, -1], 'RIGHT': [1, 0], 'LEFT': [-1, 0]}
         self.command = None
         self.warrior_location = self.object_location()
@@ -61,27 +62,26 @@ class Warrior(GameObject):
                 self.warrior_location[0] = self.warrior_location[0] - 1
         return self.warrior_location
 
-    def move_to_mount_doom(self, lock):
-        lock = lock
+    def move_to_mount_doom(self):
         while True:
-            lock.acquire()
+            self.grid_keeper.acquire_lock()
             self.command = self.get_direction()
             a, b = self.take_step(command=self.command)
             if isinstance(self.grid[a][b], MountDoom):
                 print('WIN', self)
-                lock.release()
+                self.grid_keeper.release_lock()
                 break
             elif isinstance(self.grid[a][b], Monster):
                 print('Meet Monster', self)
-                lock.release()
+                self.grid_keeper.release_lock()
                 break
             elif isinstance(self.grid[a][b], Tree):
                 self.warrior_location[0] = self.warrior_location[0] - self.move_dic[self.command][0]
                 self.warrior_location[1] = self.warrior_location[1] - self.move_dic[self.command][1]
                 a, b = self.warrior_location
-                self.grid[a][b] = self
-                lock.release()
+                self.grid_keeper.place_in_grid(a, b, self)
+                self.grid_keeper.release_lock()
             else:
-                self.grid[a][b] = self
-                lock.release()
+                self.grid_keeper.place_in_grid(a, b, self)
+                self.grid_keeper.release_lock()
 
