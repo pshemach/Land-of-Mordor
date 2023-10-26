@@ -30,19 +30,21 @@ class Game:
         self.n_tree = n_tree
         self.grid_keeper = GridKeeper(self.grid_length)
         self.grid = self.grid_keeper.grid
-        MountDoom(grid_length=self.grid_length, grid=self.grid)
+        self.mount_doom = MountDoom(grid_length=self.grid_length, grid=self.grid)
         self.warrior_lis = self.initiate_warrior()
         self.monster_lis = self.initiate_monster()
         self.tree_lis = self.initiate_tree()
         print(f'Worriers Locations: {[self.warrior_lis[i].warrior_location for i in range(self.n_warrior)]}')
         print(f'Monsters Locations: {[self.monster_lis[i].monster_location for i in range(self.n_monster)]}')
         print(f'Trees Locations: {[self.tree_lis[i].tree_location for i in range(self.n_tree)]}')
+        for war in self.warrior_lis:
+            self.mount_doom.subscribe(war)
         self.play_game()
 
     def initiate_warrior(self):
         n_war_lis = []
         for _ in range(self.n_warrior):
-            war = Warrior(grid_length=self.grid_length, grid_keeper=self.grid_keeper)
+            war = Warrior(grid_length=self.grid_length, grid_keeper=self.grid_keeper, mount_doom=self.mount_doom)
             n_war_lis.append(war)
             a, b = war.warrior_location
             self.grid[a][b] = war

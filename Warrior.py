@@ -1,14 +1,19 @@
 import random
+import threading
+
 from Monster import Monster
 from Tree import Tree
 from MountDoom import MountDoom
 from GameObjects import GameObject
+from Observer import Observer
 
 
-class Warrior(GameObject):
-    def __init__(self, grid_length, grid_keeper):
+class Warrior(GameObject, Observer):
+    def __init__(self, grid_length, grid_keeper, mount_doom):
         super().__init__(grid_length, grid_keeper)
+        self.mount_doom = mount_doom
         self.grid_keeper = grid_keeper
+        self.event = threading.Event()
         self.move_dic = {'UP': [0, 1], 'DOWN': [0, -1], 'RIGHT': [1, 0], 'LEFT': [-1, 0]}
         self.command = None
         self.warrior_location = self.object_location()
@@ -67,8 +72,11 @@ class Warrior(GameObject):
             self.grid_keeper.acquire_lock()
             self.command = self.get_direction()
             a, b = self.take_step(command=self.command)
+            if self.event.is_set():
+                break
             if isinstance(self.grid[a][b], MountDoom):
                 print('WIN', self)
+                self.mount_doom.notify(self)
                 self.grid_keeper.release_lock()
                 break
             elif isinstance(self.grid[a][b], Monster):
@@ -85,3 +93,6 @@ class Warrior(GameObject):
                 self.grid_keeper.place_in_grid(a, b, self)
                 self.grid_keeper.release_lock()
 
+    def listen_massage(self, winner):
+        if winner != self:
+            self.event.set()
