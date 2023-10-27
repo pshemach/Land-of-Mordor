@@ -73,6 +73,7 @@ class Warrior(GameObject, Observer):
             self.command = self.get_direction()
             a, b = self.take_step(command=self.command)
             if self.event.is_set():
+                self.grid_keeper.release_lock()
                 break
             if isinstance(self.grid[a][b], MountDoom):
                 print('WIN', self)
