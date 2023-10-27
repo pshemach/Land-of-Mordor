@@ -75,7 +75,7 @@ class Warrior(GameObject, Observer):
             if self.event.is_set():
                 self.grid_keeper.release_lock()
                 break
-            if isinstance(self.grid[a][b], MountDoom):
+            elif isinstance(self.grid[a][b], MountDoom):
                 print('WIN', self)
                 self.mount_doom.notify(self)
                 self.grid_keeper.release_lock()
