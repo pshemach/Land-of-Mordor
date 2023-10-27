@@ -10,6 +10,5 @@ class MountDoom(Subject):
         self.grid[a][a] = self
 
     def notify(self, winner):
-        winner = winner
         for war in self.subscribers:
             war.listen_massage(winner)
